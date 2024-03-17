@@ -3,7 +3,7 @@
 //  calc
 //
 //  Created by Dylan Archer on 10/3/24.
-//  Copyright © 2020 UTS. All rights reserved.
+//  Copyright © 2024 UTS. All rights reserved.
 //
 
 import Foundation
@@ -11,34 +11,37 @@ import Foundation
 class Calculator {
     
     var inputStack :[String] = []
+    var inputPrecedenceIndex :[[String]] = [[]] 
     var num1 :Int = 0
     var num2 :Int = 0
     var oper :String = ""
+    let stringChecker = StringChecker()
     let errorHandling = ErrorHandling()
     
-    
-    func add(no1: Int, no2: Int) -> Int {
-        return no1 + no2
+    func add(no1: Int, no2: Int) -> String {
+        return String(no1 + no2)
     }
     
-    func subtract(no1: Int, no2: Int) -> Int {
-        return no1 - no2
+    func subtract(no1: Int, no2: Int) -> String {
+        return String(no1 - no2)
     }
     
-    func multiply(no1: Int, no2: Int) -> Int {
-        return no1 * no2
+    func multiply(no1: Int, no2: Int) -> String {
+        return String(no1 * no2)
     }
     
-    func divide(no1: Int, no2: Int) -> Int {
+    func divide(no1: Int, no2: Int) -> String {
         if (no2 == 0) {
             print("Error: can't divide by zero")
             exit(EXIT_FAILURE)
         }
-        return no1 / no2
+        return String(no1 / no2)
     }
     
-    func remainder(no1: Int, no2: Int) -> Int {
-        return no1 % no2
+    func remainder(no1: Int, no2: Int) -> String {
+        return String(no1 % no2)
+    }
+    
     }
     
     func calculate(args: [String]) -> String {
@@ -54,14 +57,15 @@ class Calculator {
         
         //Return early if only a single integer is given
         if (inputStack.count == 1) {
+            if (inputStack[0].contains("+")) {
+                inputStack[0].removeFirst()
+            }
             return String(inputStack[0])
         }
                 
         //TO DO: Precedence Function to sort the order of operations
         
         while inputStack.count > 1 {
-            var result :Int = 0
-            
             if let num1Optional = Int(inputStack[0]) {
                 num1 = num1Optional
                 }
@@ -73,20 +77,15 @@ class Calculator {
             
             switch oper {
             case "+":
-                result = add(no1: num1, no2: num2)
-                inputStack.insert(String(result), at: 0)
+                inputStack.insert(add(no1: num1, no2: num2), at: 0)
             case "-":
-                result = subtract(no1: num1, no2: num2)
-                inputStack.insert(String(result), at: 0)
+                inputStack.insert(subtract(no1: num1, no2: num2), at: 0)
             case "/":
-                result = divide(no1: num1, no2: num2)
-                inputStack.insert(String(result), at: 0)
+                inputStack.insert(divide(no1: num1, no2: num2), at: 0)
             case "x":
-                result = multiply(no1: num1, no2: num2)
-                inputStack.insert(String(result), at: 0)
+                inputStack.insert(multiply(no1: num1, no2: num2), at: 0)
             case "%":
-                result = remainder(no1: num1, no2: num2)
-                inputStack.insert(String(result), at: 0)
+                inputStack.insert(remainder(no1: num1, no2: num2), at: 0)
             default:
                 // This error should already be caught by
                 // errorHandling.invalidOperator
@@ -95,7 +94,6 @@ class Calculator {
                 exit(EXIT_FAILURE)
             }
         }
-
         return("\(inputStack[0])")
     }
 }
