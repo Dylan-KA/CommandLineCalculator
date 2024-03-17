@@ -14,6 +14,7 @@ class ErrorHandling {
     
     func checkForAllErrorTypes(arguments: [String]) {
         illegalCharacters(arguments: arguments)
+        outOfBoundsCheck(arguments: arguments)
         invalidOperator(arguments: arguments)
         startsWithNumber(arguments: arguments)
         endsWithNumber(arguments: arguments)
@@ -27,6 +28,18 @@ class ErrorHandling {
             if (!stringChecker.isOperator(str: str) && !stringChecker.isNumber(str: str)) {
                 print("invalid args: contains illegal characters: \(str)")
                 exit(EXIT_FAILURE)
+            }
+        }
+    }
+    
+    //Given arguments, check if a number if out of bounds
+    func outOfBoundsCheck(arguments: [String]) {
+        for str in arguments {
+            if let num = Int(str) {
+                if (num > Int64.max) {
+                    print("invalid arguments: integer is out of bounds")
+                    exit(EXIT_FAILURE)
+                }
             }
         }
     }
@@ -52,7 +65,7 @@ class ErrorHandling {
     //Given arguments, checks if ends with a number
     func endsWithNumber(arguments: [String]) {
         if (!stringChecker.isNumber(str: arguments[arguments.count-1])) {
-            print("invalid args: last arg is not a number")
+            print("invalid args: last arg is not an integer number")
             exit(EXIT_FAILURE)
         }
     }
