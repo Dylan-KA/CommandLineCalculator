@@ -40,15 +40,11 @@ class Calculator {
     
     func remainder(no1: Int, no2: Int) -> String {
         return String(no1 % no2)
-    }
     
     }
     
     func calculate(args: [String]) -> String {
-        
-        //Dummy args
-        //let dummyArgs = ["1", "+", "2", "+", "3", "+", "4"]
-        
+
         errorHandling.checkForAllErrorTypes(arguments: args)
         
         for str in args {

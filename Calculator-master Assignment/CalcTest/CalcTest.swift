@@ -109,7 +109,7 @@ class CalcTest: XCTestCase {
         XCTAssertEqual(task6.output, String(n6), task6.input)
     }
     
-    func testInvalidInput() {
+        func testInvalidInput() {
         var task: calcProcess
         
         // valid input should not produce an error

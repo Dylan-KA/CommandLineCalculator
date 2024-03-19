@@ -35,11 +35,21 @@ class ErrorHandling {
     //Given arguments, check if a number if out of bounds
     func outOfBoundsCheck(arguments: [String]) {
         for str in arguments {
-            if let num = Int(str) {
-                if (num > Int64.max) {
-                    print("invalid arguments: integer is out of bounds")
-                    exit(EXIT_FAILURE)
+            if Int(str) != nil {
+                //normal int, no error
+            } else {
+                //failed to cast to num, check each digit to see if number
+                if (stringChecker.isOperator(str: str)) {
+                    return //valid operator, not a number, no error
                 }
+                for char in str {
+                    if (!stringChecker.isNumber(str: String(char)) && String(char) != "-") {
+                        return //not a valid number
+                    }
+                }
+                //Is a valid number that didn't cast, is out of bounds
+                print("invalid arguments: integer is out of bounds")
+                exit(EXIT_FAILURE)
             }
         }
     }
