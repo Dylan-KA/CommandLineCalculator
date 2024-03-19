@@ -31,16 +31,12 @@ class Calculator {
     }
     
     func divide(no1: Int, no2: Int) -> String {
-        if (no2 == 0) {
-            print("Error: can't divide by zero")
-            exit(EXIT_FAILURE)
-        }
+        errorHandling.divideByZeroCheck(no2: no2)
         return String(no1 / no2)
     }
     
     func remainder(no1: Int, no2: Int) -> String {
         return String(no1 % no2)
-    
     }
     
     func calculate(args: [String]) -> String {
@@ -85,7 +81,7 @@ class Calculator {
             default:
                 // This error should already be caught by
                 // errorHandling.invalidOperator
-                // but just in case
+                // but just to satisfy default case
                 print("error: not a valid operator")
                 exit(EXIT_FAILURE)
             }

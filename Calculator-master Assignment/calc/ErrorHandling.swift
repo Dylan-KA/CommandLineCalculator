@@ -22,6 +22,13 @@ class ErrorHandling {
         consecutiveOperators(arguments: arguments)
     }
     
+    //Checks if the 2nd number is a zero
+    func divideByZeroCheck(no2 :Int) {
+        if (no2 == 0) {
+            print("Error: can't divide by zero")
+            exit(EXIT_FAILURE)
+        }
+    }
     //Given arguments, checks if it contains illegal charaters (
     func illegalCharacters(arguments: [String]) {
         for str in arguments {
