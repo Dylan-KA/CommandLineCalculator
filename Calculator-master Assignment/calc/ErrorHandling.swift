@@ -38,7 +38,7 @@ class ErrorHandling {
             if Int(str) != nil {
                 //normal int, no error
             } else {
-                //failed to cast to num, check each digit to see if number
+                //failed to cast to num, check each digit to see if valid number
                 if (stringChecker.isOperator(str: str)) {
                     return //valid operator, not a number, no error
                 }
@@ -47,7 +47,7 @@ class ErrorHandling {
                         return //not a valid number
                     }
                 }
-                //Is a valid number that didn't cast, is out of bounds
+                //Is a valid number but failed to cast to an Int, must be out of bounds
                 print("invalid arguments: integer is out of bounds")
                 exit(EXIT_FAILURE)
             }
