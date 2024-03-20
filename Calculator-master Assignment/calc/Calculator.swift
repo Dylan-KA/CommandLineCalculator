@@ -11,7 +11,6 @@ import Foundation
 class Calculator {
     
     var inputStack :[String] = []
-    var inputPrecedenceIndex :[[String]] = [[]] 
     var num1 :Int = 0
     var num2 :Int = 0
     var oper :String = ""
@@ -42,9 +41,38 @@ class Calculator {
     func calculate(args: [String]) -> String {
 
         errorHandling.checkForAllErrorTypes(arguments: args)
-        
-        for str in args {
-            inputStack.append(str)
+        if (args.count > 3) {
+            var skipNextNum :Bool = false
+
+            for currentIndex in 0..<args.count {
+                let str = args[currentIndex]
+                
+                // Perform higher precedence calculations first and add lower precedence to the stack
+                if stringChecker.isOperator(str: str) && stringChecker.higherPrecedence(str: str) {
+                    let newCalculator = Calculator()
+                    
+                    var previousNum: String = ""
+                    if let previousNumOptional :String = inputStack.last {previousNum = previousNumOptional}
+                    
+                    let nextIndex = currentIndex + 1
+                    let nextNum: String = nextIndex < args.count ? args[nextIndex] : ""
+                    
+                    let newStr = newCalculator.calculate(args: [previousNum, str, nextNum])
+                    if currentIndex > 0 {
+                        inputStack.removeLast() // Remove previous num from stack as it will be used in recursive calculation
+                    }
+                    skipNextNum = true // Prevent next num from being added to stack as it is used in recursive calculation
+                    inputStack.append(newStr)
+                }
+                if (!skipNextNum) {
+                    inputStack.append(str)
+                } else if (stringChecker.isNumber(str: str)) {
+                    skipNextNum = false
+                }            }
+        } else { //add to inputStack like normal
+            for str in args {
+                inputStack.append(str)
+            }
         }
         
         //Return early if only a single integer is given
@@ -54,9 +82,7 @@ class Calculator {
             }
             return String(inputStack[0])
         }
-                
-        //TO DO: Precedence Function to sort the order of operations
-        
+                        
         while inputStack.count > 1 {
             if let num1Optional = Int(inputStack[0]) {
                 num1 = num1Optional
@@ -82,7 +108,7 @@ class Calculator {
                 // This error should already be caught by
                 // errorHandling.invalidOperator
                 // but just to satisfy default case
-                print("error: not a valid operator")
+                print("error: not a valid operator: \(oper)")
                 exit(EXIT_FAILURE)
             }
         }

@@ -35,6 +35,14 @@ class StringChecker {
         return true
     }
     
+    //Returns true if the given string is higher precedence than add/subtract
+    func higherPrecedence(str: String) -> Bool {
+        let operators = "x/%"
+        if (operators.contains(str)) {
+            return true
+        }
+        return false
+    }
 }
 
 

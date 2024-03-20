@@ -74,7 +74,7 @@ class ErrorHandling {
     //Given arguments, checks if it starts with a number
     func startsWithNumber(arguments: [String]) {
         if (!stringChecker.isNumber(str: arguments[0])) {
-            print("invalid args: first arg is not an integer number")
+            print("invalid args: first arg is not an integer number: \(arguments[0])")
             exit(EXIT_FAILURE)
         }
     }
